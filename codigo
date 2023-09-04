@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    FILE *entrada, *saida;
+    char linha[100];
+    char aluno[50], telefone[20], curso[50];
+    float nota1, nota2, media;
+
+    entrada = fopen("DadosEntrada.csv", "r");
+    saida = fopen("SituacaoFinal.csv", "w");
+
+    if (entrada == NULL || saida == NULL) {
+printf("foi encontrado um erro ao tentar abrir arquivo.");
+        return 1; }
+    
+fprintf(saida, "Nome, Média, Conclusao\n");
+	while (fgets(linha, sizeof(linha), entrada) != NULL) {
+      
+    if (sscanf(linha, "%[^,],%[^,],%[^,],%f,%f", aluno, telefone, curso, &nota1, &nota2) == 5) {
+    	media = (nota1 + nota2) / 2.0;
+			char conclusao[20];
+            if (media >= 7.0) {
+                strcpy(conclusao, "APROVADO");
+            } else {
+                strcpy(conclusao, "REPROVADO");}
+            
+fprintf(saida, "%s, %.2f, %s\n", aluno, media, conclusao);
+        } }
+   	fclose(entrada);
+    fclose(saida);
+printf("um novo arquivo foi gerado com os resultados: SituacaoFinal.csv");
+
+    return 0;
+}
